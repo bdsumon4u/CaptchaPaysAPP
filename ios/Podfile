@@ -18,6 +18,8 @@ target 'CaptchaPays' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'CaptchaPaysTests' do
     inherit! :complete
     # Pods for testing

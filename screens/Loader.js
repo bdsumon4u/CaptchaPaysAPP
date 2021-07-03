@@ -1,6 +1,6 @@
 import React from 'react';
-import {View} from 'react-native';
+import LottieView from 'lottie-react-native';
 
 export default function Loader({state}) {
-  return <View />;
+  return <LottieView source={require('../assets/loader.json')} autoPlay loop />;
 }

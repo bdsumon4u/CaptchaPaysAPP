@@ -46,6 +46,18 @@ export default function Browser({base, state, updateState}) {
     return () => backHandler.remove();
   }, [navState]);
 
+  const isSiteUrl = url => {
+    url = url.replace(/\/([#?].*)?$/, '');
+    for (const item of ['', '/proofs', '/login', '/register']) {
+      if (url === base + item) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  console.log('Browser: ', Math.trunc(Math.random() * 100));
+
   return (
     <>
       <WebView
@@ -56,7 +68,11 @@ export default function Browser({base, state, updateState}) {
             canGoBack: newNavState.canGoBack,
             canGoForward: newNavState.canGoForward,
           });
+          if (isSiteUrl(newNavState.url) !== state.isSite) {
+            updateState({isSite: !state.isSite});
+          }
         }}
+        startInLoadingState={true}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
         pullToRefreshEnabled={true}

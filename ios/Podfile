@@ -20,6 +20,8 @@ target 'CaptchaPays' do
 
   pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
 
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   target 'CaptchaPaysTests' do
     inherit! :complete
     # Pods for testing

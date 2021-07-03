@@ -1,10 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import WebView from 'react-native-webview';
+import NetInfo from '@react-native-community/netinfo';
 import {Alert, BackHandler} from 'react-native';
 import Loader from './Loader';
+import Disconnected from './Disconnected';
 
 export default function Browser({base, state, updateState}) {
   const webViewRef = useRef(null);
+  const [connected, setConnected] = useState(true);
   const [loading, setLoading] = useState(true);
   const [navState, setNavState] = useState({
     canGoBack: false,
@@ -13,6 +16,10 @@ export default function Browser({base, state, updateState}) {
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    const unsubscribeNetInfo = NetInfo.addEventListener(({isConnected}) => {
+      connected === isConnected || setConnected(isConnected);
+    });
+
     const handleBackButton = () => {
       if (navState.canGoBack) {
         webViewRef.current.goBack();
@@ -43,8 +50,11 @@ export default function Browser({base, state, updateState}) {
       'hardwareBackPress',
       handleBackButton,
     );
-    return () => backHandler.remove();
-  }, [navState]);
+    return () => {
+      unsubscribeNetInfo();
+      backHandler.remove();
+    };
+  }, [connected, navState]);
 
   const isSiteUrl = url => {
     url = url.replace(/\/([#?].*)?$/, '');
@@ -60,25 +70,30 @@ export default function Browser({base, state, updateState}) {
 
   return (
     <>
-      <WebView
-        ref={webViewRef}
-        source={{uri: state.link}}
-        onNavigationStateChange={newNavState => {
-          setNavState({
-            canGoBack: newNavState.canGoBack,
-            canGoForward: newNavState.canGoForward,
-          });
-          if (isSiteUrl(newNavState.url) !== state.isSite) {
-            updateState({isSite: !state.isSite});
-          }
-        }}
-        startInLoadingState={true}
-        onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
-        pullToRefreshEnabled={true}
-        renderLoading={() => <Loader state={state} />}
-      />
-      {loading && <Loader state={state} />}
+      {connected ? (
+        <WebView
+          ref={webViewRef}
+          source={{uri: state.link}}
+          onNavigationStateChange={newNavState => {
+            setNavState({
+              canGoBack: newNavState.canGoBack,
+              canGoForward: newNavState.canGoForward,
+            });
+            if (isSiteUrl(newNavState.url) !== state.isSite) {
+              updateState({isSite: !state.isSite});
+            }
+          }}
+          startInLoadingState={true}
+          onLoadStart={() => setLoading(true)}
+          onLoadEnd={() => setLoading(false)}
+          pullToRefreshEnabled={true}
+          renderLoading={() => <Loader state={state} />}
+          renderError={() => <Disconnected />}
+        />
+      ) : (
+        <Disconnected />
+      )}
+      {connected && loading && <Loader state={state} />}
     </>
   );
 }

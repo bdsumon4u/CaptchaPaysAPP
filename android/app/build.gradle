@@ -165,20 +165,20 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-        release {
+//         release {
 //             if (System.getenv()["CI"]) { // CI=true is exported by Codemagic
 //               storeFile file(System.getenv()["FCI_KEYSTORE_PATH"])
 //               storePassword System.getenv()["FCI_KEYSTORE_PASSWORD"]
 //               keyAlias System.getenv()["FCI_KEY_ALIAS"]
 //               keyPassword System.getenv()["FCI_KEY_PASSWORD"]
 //             } else
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-        }
+//             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+//                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
+//                 storePassword MYAPP_UPLOAD_STORE_PASSWORD
+//                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
+//                 keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+//             }
+//         }
     }
     buildTypes {
         debug {

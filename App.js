@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import type {Node} from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import {StatusBar, useColorScheme} from 'react-native';
 
 import RNBootSplash from 'react-native-bootsplash';
 import AppView from './screens/AppView';
@@ -12,7 +12,7 @@ const App: () => Node = () => {
     // Hide SplashScreen after 3secs or Make an async task
     setTimeout(() => {
       RNBootSplash.hide({fade: true});
-    }, 3000);
+    }, 1000);
   }, []);
 
   return (

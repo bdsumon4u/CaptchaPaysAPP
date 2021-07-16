@@ -34,7 +34,7 @@ const tabs = [
 const bottomTab = (base, state, updateState) => {
   if (!state.isSite) {
     for (const tab of tabs) {
-      console.log(tab.path, state.link);
+      // console.log(tab.path, state.link);
       if (state.link.startsWith(base + tab.path)) {
         tab.name === state.activeTab || updateState({activeTab: tab.name});
         break;
@@ -76,7 +76,7 @@ const AppView = () => {
 
   const updateState = data => setState({...state, ...data});
 
-  console.log('App View: ', Math.trunc(Math.random() * 100));
+  // console.log('App View: ', Math.trunc(Math.random() * 100));
   return (
     <>
       <Browser base={base} state={state} updateState={updateState} />
